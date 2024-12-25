@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Новогодняя игра</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #0a1f26;
+            font-family: 'Arial', sans-serif;
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: #ffcc00;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
+            margin-bottom: 20px;
+        }
+
+        #porok {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            background-color: #ff5733;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(255, 87, 51, 0.8);
+            transition: transform 0.1s ease;
+        }
+
+        #congratulations {
+            display: none;
+            font-size: 2rem;
+            color: gold;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            color: #ffffff;
+            font-size: 24px;
+            animation: snow 10s linear infinite;
+        }
+
+        .firework {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 100px;
+            height: 100px;
+            background-color: transparent;
+            border-radius: 50%;
+            animation: firework 1s ease-out forwards;
+        }
+
+        @keyframes snow {
+            0% { top: -10px; opacity: 1; }
+            100% { top: 100vh; opacity: 0; }
+        }
+
+        @keyframes firework {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(3);
+                opacity: 0.7;
+            }
+            100% {
+                transform: scale(5);
+                opacity: 0;
+                background: radial-gradient(circle, rgba(255, 255, 255, 0) 30%, rgba(255, 215, 0, 0.8) 80%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>С Новым Годом! 2025!</h1>
+    <div id="porok"></div>
+    <div id="congratulations">Поздравляю! Ты самая сладкая булочка!</div>
+
+    <script>
+        function createSnowflake() {
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            snowflake.textContent = '❄';
+            snowflake.style.left = Math.random() * 100 + 'vw';
+            snowflake.style.animationDuration = Math.random() * 3 + 5 + 's';
+            document.body.appendChild(snowflake);
+            
+            setTimeout(() => {
+                snowflake.remove();
+            }, 10000);
+        }
+
+        setInterval(createSnowflake, 200);
+
+        const porok = document.getElementById('porok');
+        const congratulations = document.getElementById('congratulations');
+        
+        let porokX = Math.random() * window.innerWidth;
+        let porokY = Math.random() * window.innerHeight;
+        let porokSpeedX = 1;
+        let porokSpeedY = 1;
+
+        function movePorok() {
+            if (porokX + 120 > window.innerWidth || porokX < 0) {
+                porokSpeedX = -porokSpeedX;
+            }
+
+            if (porokY + 120 > window.innerHeight || porokY < 0) {
+                porokSpeedY = -porokSpeedY;
+            }
+
+            porokX += porokSpeedX;
+            porokY += porokSpeedY;
+
+            porok.style.left = porokX + 'px';
+            porok.style.top = porokY + 'px';
+        }
+
+        setInterval(movePorok, 10);
+
+        porok.addEventListener('click', () => {
+            const firework = document.createElement('div');
+            firework.classList.add('firework');
+            document.body.appendChild(firework);
+
+            setTimeout(() => {
+                firework.remove();
+            }, 1000);
+
+            congratulations.style.display = 'block';
+            porok.style.display = 'none';
+        });
+    </script>
+</body>
+</html>
